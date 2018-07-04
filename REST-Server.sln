@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REST-Server", "REST-Server\REST-Server.csproj", "{EC2BB404-8538-4EB7-A100-B7C64D68E2BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC2BB404-8538-4EB7-A100-B7C64D68E2BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2BB404-8538-4EB7-A100-B7C64D68E2BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2BB404-8538-4EB7-A100-B7C64D68E2BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2BB404-8538-4EB7-A100-B7C64D68E2BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {57D08FF8-EF50-4219-BC3B-B7056408E306}
+	EndGlobalSection
+EndGlobal

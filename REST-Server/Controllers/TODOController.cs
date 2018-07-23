@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace REST_Server.Controllers
 {
     [Route("api/[controller]")]
     public class TODOController : Controller
     {
+        readonly ILogger logger;
+
         static Dictionary<int, string> TODOList = new Dictionary<int, string>();
         static TODOController()
         {
@@ -16,10 +19,16 @@ namespace REST_Server.Controllers
             TODOList.Add(2, "Do Laundry");
         }
 
+        public TODOController(ILogger<TODOController> logger)
+        {
+            this.logger = logger;
+        }
+
         // GET api/TODO
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            Console.Write(TODOList.Keys);
             return TODOList.Values;
         }
 
@@ -34,6 +43,8 @@ namespace REST_Server.Controllers
         [HttpPost("{id}")]
         public int Post(int id, [FromBody]string value)
         {
+            if (TODOList.ContainsKey(id))
+                throw new ArgumentException(string.Format("Key: {0} already found.", id));
             TODOList.Add(id, value);
             return id;
         }
@@ -42,6 +53,8 @@ namespace REST_Server.Controllers
         [HttpPut("{id}")]
         public int Put(int id, [FromBody]string value)
         {
+            if (TODOList.ContainsKey(id))
+                throw new KeyNotFoundException(string.Format("Key: {0} already found.", id));
             TODOList[id] = value;
             return id;
         }

@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using NJsonSchema;
+using NSwag.AspNetCore;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Reflection;
+using System.Text;
 
 namespace REST_Server
 {
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -31,13 +36,24 @@ namespace REST_Server
         {
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
-            if (env.IsDevelopment())
+            // Use Swagger to wrap APIs and Document Them
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseMvc();
+                settings.GeneratorSettings.DefaultPropertyNameHandling =
+                    PropertyNameHandling.CamelCase;
+            });
+            // Use our own Exception Handler to wrap error messages as JSON.
+            app.UseExceptionHandler().WithConventions(
+                (context) => {
+                    context.MessageFormatter(
+                        (exception, content) =>
+                            JsonConvert.SerializeObject(new { Type = exception.GetType().ToString(), Message = exception.Message, StackTrace = env.IsDevelopment()? exception.StackTrace: "" })
+                    );
+                    context.ContentType = "application/json";
+                    context.ForException<Exception>().ReturnStatusCode((int)HttpStatusCode.InternalServerError);
+                }
+           );
+           app.UseMvc();
         }
     }
 }
